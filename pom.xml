@@ -118,6 +118,9 @@ THE SOFTWARE.
     <sonar.moduleKey>${artifactId}</sonar.moduleKey>
     <sonar.organization>an-so</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.c.file.suffixes=->
+    <sonar.cpp.file.suffixes=->
+    <sonar.objc.file.suffixes=->
   </properties>
 
   <!-- Note that the 'repositories' and 'pluginRepositories' blocks below are actually copy-pasted
