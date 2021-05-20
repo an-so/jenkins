@@ -1160,7 +1160,9 @@ public class Util {
 
     /**
      * Concatenate multiple strings by inserting a separator.
+     * @deprecated since TODO; use {@link String#join(CharSequence, Iterable)}
      */
+    @Deprecated
     @NonNull
     public static String join(@NonNull Collection<?> strings, @NonNull String separator) {
         StringBuilder buf = new StringBuilder();
@@ -1412,7 +1414,7 @@ public class Util {
      * but don't remember it right now.
      *
      * @since 1.204
-     * @deprecated since 2008-05-13. This method is broken (see ISSUE#1666). It should probably
+     * @deprecated since 2008-05-13. This method is broken (see JENKINS-1666). It should probably
      * be removed but I'm not sure if it is considered part of the public API
      * that needs to be maintained for backwards compatibility.
      * Use {@link #encode(String)} instead.

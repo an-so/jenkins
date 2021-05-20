@@ -37,6 +37,7 @@ import hudson.util.FormValidation.CheckMethod;
 import hudson.util.ReflectionUtils;
 import hudson.util.ReflectionUtils.Parameter;
 import hudson.views.ListViewColumn;
+import java.lang.reflect.InvocationTargetException;
 import jenkins.model.GlobalConfiguration;
 import jenkins.model.GlobalConfigurationCategory;
 import jenkins.model.Jenkins;
@@ -429,7 +430,7 @@ public abstract class Descriptor<T extends Describable<T>> implements Saveable, 
         List<String> depends = buildFillDependencies(method, new ArrayList<>());
 
         if (!depends.isEmpty())
-            attributes.put("fillDependsOn",Util.join(depends," "));
+            attributes.put("fillDependsOn", String.join(" ", depends));
         attributes.put("fillUrl", String.format("%s/%s/fill%sItems", getCurrentDescriptorByNameUrl(), getDescriptorUrl(), capitalizedFieldName));
     }
 
@@ -589,7 +590,7 @@ public abstract class Descriptor<T extends Describable<T>> implements Saveable, 
             } else {
                 if (req==null) {
                     // yes, req is supposed to be always non-null, but see the note above
-                    return verifyNewInstance(clazz.newInstance());
+                    return verifyNewInstance(clazz.getDeclaredConstructor().newInstance());
                 }
 
                 // new behavior as of 1.206
@@ -608,10 +609,8 @@ public abstract class Descriptor<T extends Describable<T>> implements Saveable, 
                     req.setBindInterceptor(oldInterceptor);
                 }
             }
-        } catch (NoSuchMethodException e) {
-            throw new AssertionError(e); // impossible
-        } catch (InstantiationException | IllegalAccessException | RuntimeException e) {
-            throw new Error("Failed to instantiate "+clazz+" from "+RedactSecretJsonInErrorMessageSanitizer.INSTANCE.sanitize(formData),e);
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | RuntimeException e) {
+            throw new LinkageError("Failed to instantiate "+clazz+" from "+RedactSecretJsonInErrorMessageSanitizer.INSTANCE.sanitize(formData),e);
         }
     }
 
