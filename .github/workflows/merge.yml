@@ -9,7 +9,9 @@ jobs:
   merge:
     runs-on: ubuntu-latest
     steps:
-      - name: fetch upstream
-        run: git fetch upstream
       - name: merge
-        run: git merge upstream/master
+        run: | 
+              pwd
+              cd jenkins
+              git fetch upstream
+              git merge upstream/master
