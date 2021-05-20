@@ -1,21 +1,18 @@
-name: Merge original repo once a day at midnight (UTC)
+name: Sync Fork
+
 on:
-  push:
-    branches:
-      - master
   schedule:
-    - cron: "30 10 * * *"
+    - cron: '0 12 * * *'
+  workflow_dispatch: # on button click
+
 jobs:
-  merge:
+  sync:
+
     runs-on: ubuntu-latest
+
     steps:
-      - name: fetch
-        uses: actions/checkout@v2
+      - uses: tgymnich/fork-sync@v1.4
         with:
-          ref: upstream
-      - run: | 
-              git remote -v
-              git fetch upstream
-      - name: merge
-        uses: actions/checkout@v2
-      - run: git merge upstream/master
+          owner: an-so
+          base: master
+          head: master
