@@ -5,7 +5,6 @@ on:
 
   workflow_dispatch:  # click the button on Github repo!
 
-
 jobs:
   sync_with_upstream:
     runs-on: ubuntu-latest
@@ -19,6 +18,7 @@ jobs:
         ref: master
         # submodules: 'recursive'     ### may be needed in your situation
     - run: git remote add upstream https://github.com/jenkinsci/jenkins.git
+    # Step 2
     - name: fetch
     - run: git fetch upstream
     - name: merge
