@@ -5,7 +5,8 @@ on:
 jobs:
   merge:
     runs-on: ubuntu-latest
-    defaults:
-      run: |
-        git fetch upstream
-        git merge upstream/master
+    steps:
+      - name: fetch upstream
+        run: git fetch upstream
+      - name: merge
+        run: git merge upstream/master
