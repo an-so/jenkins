@@ -1,0 +1,11 @@
+name: Merge original repo once a day at midnight
+on:
+  schedule:
+    - cron: "2 10 * * *"
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    defaults:
+      run: |
+        git fetch upstream
+        git merge upstream/master
