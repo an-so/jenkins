@@ -1,7 +1,7 @@
-name: Merge original repo once a day at midnight
+name: Merge original repo once a day at midnight (UTC)
 on:
   schedule:
-    - cron: "22 8 * * *"
+    - cron: "30 10 * * *"
 jobs:
   merge:
     runs-on: ubuntu-latest
