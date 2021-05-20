@@ -11,7 +11,11 @@ jobs:
     steps:
       - name: fetch
         uses: actions/checkout@v2
-      - run: git fetch upstream
+        with:
+          ref: upstream
+      - run: | 
+              git remote -v
+              git fetch upstream
       - name: merge
         uses: actions/checkout@v2
       - run: git merge upstream/master
