@@ -12,6 +12,6 @@ jobs:
       - name: merge
         run: | 
               pwd
-              cd jenkins
+              cd /home/runner/work/jenkins/jenkins
               git fetch upstream
               git merge upstream/master
