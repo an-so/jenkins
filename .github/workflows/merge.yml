@@ -17,11 +17,12 @@ jobs:
       with:
         ref: master
         # submodules: 'recursive'     ### may be needed in your situation
-    - run: git remote add upstream https://github.com/jenkinsci/jenkins.git
+    - name: add upstream
+      run: git remote add upstream https://github.com/jenkinsci/jenkins.git
     # Step 2
     - name: fetch
-    - run: git fetch upstream
+      run: git fetch upstream
     - name: merge
-    - run: git merge upstream/master
+      run: git merge upstream/master
 
 
