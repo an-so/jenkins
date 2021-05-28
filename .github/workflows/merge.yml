@@ -1,0 +1,28 @@
+on:
+  schedule:
+    - cron:  '0 0 * * *'
+    # scheduled every day at midneight (UTC)
+
+  workflow_dispatch:  # click the button on Github repo!
+
+jobs:
+  sync_with_upstream:
+    runs-on: ubuntu-latest
+    name: Sync main with upstream latest
+
+    steps:
+    # Step 1: run a standard checkout action, provided by github
+    - name: Checkout master
+      uses: actions/checkout@v2
+      with:
+        ref: master
+        # submodules: 'recursive'     ### may be needed in your situation
+    - name: add upstream
+      run: git remote add upstream https://github.com/jenkinsci/jenkins.git
+    # Step 2
+    - name: fetch
+      run: git fetch upstream
+    - name: merge
+      run: git merge upstream/master
+
+
