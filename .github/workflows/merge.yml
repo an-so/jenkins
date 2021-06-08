@@ -24,5 +24,8 @@ jobs:
     - name: fetch
       run: git fetch upstream
     - name: merge
-      run: git merge upstream/master
+      run: git merge upstream/master -m "daily merge"
+    - name: push
+      run: git push origin master
+      
 
