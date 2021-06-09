@@ -24,7 +24,10 @@ jobs:
     - name: fetch
       run: git fetch upstream
     - name: merge
-      run: git merge upstream/master -m "daily merge"
+      run: |
+        git config --global user.email "you@merger.com"
+        git config --global user.name "daily merge"
+        git merge upstream/master -m "daily merge"
     - name: push
       run: git push origin master
       
