@@ -36,6 +36,7 @@ THE SOFTWARE.
 
   <name>Jenkins core</name>
   <description>Jenkins core code and view files to render HTML.</description>
+  <url>https://github.com/jenkinsci/jenkins</url>
 
   <properties>
     <staplerFork>true</staplerFork>
@@ -103,18 +104,9 @@ THE SOFTWARE.
       <groupId>org.connectbot.jbcrypt</groupId>
       <artifactId>jbcrypt</artifactId>
     </dependency>
-    <dependency> <!-- for compatibility only; all new code should use JNR. Not included into BOM due to the same reason -->
-      <groupId>org.jruby.ext.posix</groupId>
-      <artifactId>jna-posix</artifactId>
-      <version>1.0.3-jenkins-1</version>
-    </dependency>
     <dependency>
       <groupId>com.github.jnr</groupId>
       <artifactId>jnr-posix</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.ow2.asm</groupId>
-      <artifactId>asm</artifactId>
     </dependency>
     <!--
       For compatibility only; not included into the BOM for the same reason. TODO once
