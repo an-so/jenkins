@@ -23,6 +23,12 @@
  */
 package hudson.slaves;
 
+import static hudson.slaves.SlaveComputer.LogHolder.SLAVE_LOG_HANDLER;
+
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.CheckReturnValue;
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.OverrideMustInvoke;
 import hudson.AbortException;
 import hudson.FilePath;
 import hudson.Functions;
@@ -54,32 +60,6 @@ import hudson.util.StreamTaskListener;
 import hudson.util.VersionNumber;
 import hudson.util.io.RewindableFileOutputStream;
 import hudson.util.io.RewindableRotatingFileOutputStream;
-import jenkins.agents.AgentComputerUtil;
-import jenkins.model.Jenkins;
-import jenkins.security.ChannelConfigurator;
-import jenkins.security.MasterToSlaveCallable;
-import jenkins.slaves.EncryptedSlaveAgentJnlpFile;
-import jenkins.slaves.JnlpAgentReceiver;
-import jenkins.slaves.RemotingVersionInfo;
-import jenkins.slaves.systemInfo.SlaveSystemInfo;
-import jenkins.util.SystemProperties;
-import org.kohsuke.accmod.Restricted;
-import org.kohsuke.accmod.restrictions.Beta;
-import org.kohsuke.accmod.restrictions.DoNotUse;
-import org.kohsuke.accmod.restrictions.NoExternalUse;
-import org.kohsuke.stapler.HttpRedirect;
-import org.kohsuke.stapler.HttpResponse;
-import org.kohsuke.stapler.QueryParameter;
-import org.kohsuke.stapler.StaplerRequest;
-import org.kohsuke.stapler.StaplerResponse;
-import org.kohsuke.stapler.WebMethod;
-import org.kohsuke.stapler.export.Exported;
-import org.kohsuke.stapler.interceptor.RequirePOST;
-
-import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.umd.cs.findbugs.annotations.CheckReturnValue;
-import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.OverrideMustInvoke;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -97,10 +77,28 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-
-import static hudson.slaves.SlaveComputer.LogHolder.SLAVE_LOG_HANDLER;
+import jenkins.agents.AgentComputerUtil;
+import jenkins.model.Jenkins;
+import jenkins.security.ChannelConfigurator;
+import jenkins.security.MasterToSlaveCallable;
+import jenkins.slaves.EncryptedSlaveAgentJnlpFile;
+import jenkins.slaves.JnlpAgentReceiver;
+import jenkins.slaves.RemotingVersionInfo;
+import jenkins.slaves.systemInfo.SlaveSystemInfo;
+import jenkins.util.SystemProperties;
 import org.jenkinsci.remoting.util.LoggingChannelListener;
-
+import org.kohsuke.accmod.Restricted;
+import org.kohsuke.accmod.restrictions.Beta;
+import org.kohsuke.accmod.restrictions.DoNotUse;
+import org.kohsuke.accmod.restrictions.NoExternalUse;
+import org.kohsuke.stapler.HttpRedirect;
+import org.kohsuke.stapler.HttpResponse;
+import org.kohsuke.stapler.QueryParameter;
+import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.StaplerResponse;
+import org.kohsuke.stapler.WebMethod;
+import org.kohsuke.stapler.export.Exported;
+import org.kohsuke.stapler.interceptor.RequirePOST;
 
 /**
  * {@link Computer} for {@link Slave}s.
@@ -711,13 +709,12 @@ public class SlaveComputer extends Computer {
             for (ComputerListener cl : ComputerListener.all()) {
                 try {
                     cl.onOnline(this,taskListener);
+                } catch (AbortException e) {
+                    taskListener.error(e.getMessage());
                 } catch (Exception e) {
                     // Per Javadoc log exceptions but still go online.
                     // NOTE: this does not include Errors, which indicate a fatal problem
-                    taskListener.getLogger().format(
-                        "onOnline: %s reported an exception: %s%n",
-                        cl.getClass(),
-                        e.toString());
+                    Functions.printStackTrace(e, taskListener.error(Messages.ComputerLauncher_unexpectedError()));
                 } catch (Throwable e) {
                     closeChannel();
                     throw e;

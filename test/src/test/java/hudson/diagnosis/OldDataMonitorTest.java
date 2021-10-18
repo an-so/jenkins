@@ -24,6 +24,9 @@
 
 package hudson.diagnosis;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import hudson.XmlFile;
 import hudson.model.FreeStyleBuild;
 import hudson.model.FreeStyleProject;
@@ -40,8 +43,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import jenkins.model.lazy.BuildReference;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -83,7 +84,7 @@ public class OldDataMonitorTest {
         p._getRuns().purgeCache();
         b = p.getBuildByNumber(1);
         assertEquals(Collections.singleton(b), OldDataMonitor.get(r.jenkins).getData().keySet());
-        WeakReference<?> ref = new WeakReference<Object>(b);
+        WeakReference<?> ref = new WeakReference<>(b);
         b = null;
         MemoryAssert.assertGC(ref, true);
     }
