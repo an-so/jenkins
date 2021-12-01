@@ -70,7 +70,7 @@ THE SOFTWARE.
   </issueManagement>
 
   <properties>
-    <revision>2.323</revision>
+    <revision>2.324</revision>
     <changelist>-SNAPSHOT</changelist>
 
     <!-- *.html files are in UTF-8, and *.properties are in iso-8859-1, so this configuration is actually incorrect,
@@ -438,6 +438,11 @@ THE SOFTWARE.
             <checkstyleRules>
               <module name="Checker">
                 <module name="UniqueProperties" />
+                <module name="LineLength">
+                  <property name="fileExtensions" value="java" />
+                  <property name="max" value="300" />
+                  <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://" />
+                </module>
                 <module name="TreeWalker">
                   <!--
                     Annotations: https://checkstyle.sourceforge.io/config_annotation.html
@@ -452,15 +457,18 @@ THE SOFTWARE.
                   <!--
                     Coding: https://checkstyle.sourceforge.io/config_coding.html
                   -->
+                  <module name="ArrayTrailingComma" />
                   <module name="AvoidNoArgumentSuperConstructorCall" />
                   <module name="CovariantEquals" />
                   <module name="DefaultComesLast" />
                   <module name="EqualsHashCode" />
+                  <module name="MissingSwitchDefault" />
                   <module name="NoEnumTrailingComma" />
                   <module name="OneStatementPerLine" />
                   <module name="PackageDeclaration" />
                   <module name="SimplifyBooleanExpression" />
                   <module name="StringLiteralEquality" />
+                  <module name="SuperClone" />
                   <module name="UnnecessarySemicolonAfterOuterTypeDeclaration" />
                   <module name="UnnecessarySemicolonAfterTypeMemberDeclaration" />
                   <module name="UnnecessarySemicolonInEnumeration" />
